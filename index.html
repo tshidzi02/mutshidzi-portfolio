@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mutshidzi — Software Developer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  :root {
+    --bg: #080c10;
+    --surface: #0e1318;
+    --surface2: #131a22;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(99,230,180,0.4);
+    --accent: #63e6b4;
+    --accent2: #4fd1c5;
+    --accent-dim: rgba(99,230,180,0.12);
+    --text: #e8edf2;
+    --text-mid: #8a9ab0;
+    --text-dim: #4a5568;
+    --tag-bg: rgba(99,230,180,0.08);
+    --tag-border: rgba(99,230,180,0.2);
+    --red: #f97068;
+    --yellow: #f6c90e;
+    --blue: #60a5fa;
+    --purple: #a78bfa;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-mid);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-mid);
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 140px 60px 80px;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(99,230,180,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(52px, 6vw, 84px);
+    line-height: 0.95;
+    letter-spacing: -3px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .hero-name .line2 {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+  }
+
+  .hero-title {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--text-mid);
+    margin-bottom: 32px;
+    margin-top: 16px;
+  }
+
+  .hero-desc {
+    color: var(--text-mid);
+    font-size: 13px;
+    line-height: 1.9;
+    max-width: 440px;
+    margin-bottom: 48px;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #080c10;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 14px 28px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: #4fd1c5; transform: translateY(-2px); }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    color: var(--text-mid);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 14px 28px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Hero right: stat grid */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    transition: border-color 0.3s;
+  }
+  .stat-card:hover { border-color: var(--border-hover); }
+
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 40px;
+    color: var(--accent);
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ── SECTION ── */
+  section {
+    padding: 100px 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 64px;
+  }
+
+  .section-num {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    letter-spacing: -1px;
+    color: var(--text);
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 4px;
+  }
+
+  /* ── PROJECTS ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px 36px;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--border-hover);
+    background: var(--surface2);
+    transform: translateY(-4px);
+  }
+  .project-card:hover::before { transform: scaleX(1); }
+
+  /* Layout spans */
+  .span-7 { grid-column: span 7; }
+  .span-5 { grid-column: span 5; }
+  .span-6 { grid-column: span 6; }
+  .span-4 { grid-column: span 4; }
+  .span-8 { grid-column: span 8; }
+  .span-12 { grid-column: span 12; }
+
+  @media (max-width: 900px) {
+    .span-7, .span-5, .span-6, .span-4, .span-8 { grid-column: span 12; }
+  }
+
+  .project-index {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .project-index::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 60px;
+  }
+
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .project-subtitle {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+
+  .tag {
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    text-transform: uppercase;
+  }
+
+  .tag.blue { background: rgba(96,165,250,0.08); border-color: rgba(96,165,250,0.2); color: var(--blue); }
+  .tag.purple { background: rgba(167,139,250,0.08); border-color: rgba(167,139,250,0.2); color: var(--purple); }
+  .tag.red { background: rgba(249,112,104,0.08); border-color: rgba(249,112,104,0.2); color: var(--red); }
+  .tag.yellow { background: rgba(246,201,14,0.08); border-color: rgba(246,201,14,0.2); color: var(--yellow); }
+
+  .project-highlights {
+    list-style: none;
+    margin-bottom: 32px;
+  }
+
+  .project-highlights li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    padding-left: 16px;
+    position: relative;
+  }
+  .project-highlights li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+  }
+  .project-highlights li:last-child { border-bottom: none; }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(99,230,180,0.3);
+    padding-bottom: 2px;
+    transition: all 0.2s;
+  }
+  .project-link:hover {
+    border-color: var(--accent);
+    gap: 12px;
+  }
+
+  .project-visual {
+    background: linear-gradient(135deg, rgba(99,230,180,0.05), rgba(79,209,197,0.02));
+    border: 1px dashed var(--border);
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    font-size: 48px;
+    letter-spacing: -2px;
+    opacity: 0.6;
+  }
+
+  /* ── SKILLS SECTION ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+  }
+
+  .skill-category {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 36px 32px;
+  }
+
+  .skill-cat-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .skill-pill {
+    font-size: 11px;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    color: var(--text-mid);
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+  .skill-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── CONTACT SECTION ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .contact-main {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 60px 56px;
+  }
+
+  .contact-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 48px;
+    letter-spacing: -2px;
+    line-height: 0.95;
+    margin-bottom: 24px;
+  }
+  .contact-title em {
+    font-style: normal;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+  }
+
+  .contact-items {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 40px;
+  }
+
+  .contact-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.2s;
+  }
+  .contact-item:hover { border-color: var(--border-hover); }
+
+  .contact-item-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .contact-item-value {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+    transition: opacity 0.2s;
+  }
+  .contact-item-value:hover { opacity: 0.7; }
+
+  .contact-side {
+    background: var(--accent);
+    padding: 60px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .contact-side-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: #080c10;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+
+  .contact-side-text {
+    font-size: 13px;
+    color: rgba(8,12,16,0.65);
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+
+  .contact-avail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: #080c10;
+    font-weight: 500;
+  }
+  .avail-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #080c10;
+    opacity: 0.6;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 0 60px;
+    width: calc(100% - 120px);
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── FEATURED BADGE ── */
+  .featured-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent);
+    color: #080c10;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    background: var(--surface);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 48px;
+    animation: marquee 25s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+  .marquee-item::after {
+    content: '·';
+    color: var(--accent);
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 120px 24px 60px; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    section { padding: 60px 24px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    footer { padding: 24px; flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">M<span>.</span>Madzivhandila</a>
+  <ul class="nav-links">
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    Open to Opportunities
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Portfolio · 2025</div>
+    <h1 class="hero-name">
+      Mutshidzi<br>
+    </h1>
+    <p class="hero-title">Full-Stack Software Developer</p>
+    <p class="hero-desc">
+      I build intelligent, production-grade web systems — from AI-powered platforms and epidemiological simulations to automated document pipelines. I care about systems that work, code that communicates, and interfaces that feel inevitable.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View Work ↓</a>
+      <a href="#contact" class="btn-ghost">Get In Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-number">6</div>
+      <div class="stat-label">Featured Projects</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">4+</div>
+      <div class="stat-label">Years Building</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">30+</div>
+      <div class="stat-label">Algorithms Solved</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Problems Left</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">React</span>
+    <span class="marquee-item">Flask</span>
+    <span class="marquee-item">OpenAI GPT-4o</span>
+    <span class="marquee-item">PostgreSQL</span>
+    <span class="marquee-item">Python</span>
+    <span class="marquee-item">DigitalOcean</span>
+    <span class="marquee-item">SciPy</span>
+    <span class="marquee-item">JWT Auth</span>
+    <span class="marquee-item">Google OAuth</span>
+    <span class="marquee-item">Google Apps Script</span>
+    <span class="marquee-item">React</span>
+    <span class="marquee-item">Flask</span>
+    <span class="marquee-item">OpenAI GPT-4o</span>
+    <span class="marquee-item">PostgreSQL</span>
+    <span class="marquee-item">Python</span>
+    <span class="marquee-item">DigitalOcean</span>
+    <span class="marquee-item">SciPy</span>
+    <span class="marquee-item">JWT Auth</span>
+    <span class="marquee-item">Google OAuth</span>
+    <span class="marquee-item">Google Apps Script</span>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header fade-up">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Selected Work</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- PROJECT 1 — Large Featured -->
+    <div class="project-card span-7 fade-up">
+      <div class="featured-badge">⚡ Featured Project</div>
+      <div class="project-index">01 / 06</div>
+      <h3 class="project-title">FrontendJobs<br>AI Platform</h3>
+      <p class="project-subtitle">AI-Powered Job Search & CV Generation SaaS</p>
+      <div class="project-tags">
+        <span class="tag">React / Vite</span>
+        <span class="tag">Flask</span>
+        <span class="tag blue">PostgreSQL</span>
+        <span class="tag blue">GPT-4o</span>
+        <span class="tag purple">DigitalOcean</span>
+        <span class="tag yellow">JWT / OAuth</span>
+      </div>
+      <ul class="project-highlights">
+        <li>Architected full-stack SaaS with React + Flask, integrating GPT-4o to generate ATS-optimised CVs and cover letters tailored to job descriptions</li>
+        <li>Engineered semantic similarity scoring using OpenAI embeddings and cosine similarity for real-time ATS match scores and skills gap analysis</li>
+        <li>Designed RESTful APIs with JWT auth, Google OAuth 2.0, PostgreSQL persistence, deployed to DigitalOcean with Nginx + SSL via Certbot</li>
+        <li>Built AI tools suite: Interview Prep, LinkedIn Bio Optimiser, Salary Estimator, and Skills Gap Report</li>
+      </ul>
+      <a href="https://frontendjobs.online" class="project-link" target="_blank">
+        Visit Live Site →
+      </a>
+    </div>
+
+    <!-- PROJECT 2 -->
+    <div class="project-card span-5 fade-up">
+      <div class="project-index">02 / 06</div>
+      <h3 class="project-title">SEIR/SEIRD Epidemiological Simulator</h3>
+      <p class="project-subtitle">Compartmental Disease Spread Modelling</p>
+      <div class="project-tags">
+        <span class="tag blue">SciPy</span>
+        <span class="tag blue">Matplotlib</span>
+        <span class="tag">Python</span>
+        <span class="tag purple">ODE Solvers</span>
+      </div>
+      <ul class="project-highlights">
+        <li>Engineered compartmental epidemiological simulation using SEIR and SEIRD differential equation models for real-world disease dynamics</li>
+        <li>Implemented numerical solvers using SciPy, tracking Susceptible, Exposed, Infected, Recovered, and Deceased compartments over time</li>
+        <li>Conducted parameter sensitivity analysis varying transmission rate, recovery rate, and mortality coefficients with comparative Matplotlib visualisations</li>
+        <li>Validated outputs against published epidemiological data, translating complex mathematical theory into reproducible computational models</li>
+      </ul>
+      <a href="https://github.com/tshidzi02/seird-seir-comparison-matlab.git" class="project-link" target="_blank">
+        View on GitHub →
+      </a>
+    </div>
+
+    <!-- PROJECT 3 -->
+    <div class="project-card span-5 fade-up">
+      <div class="project-index">03 / 06</div>
+      <h3 class="project-title">React Task Manager</h3>
+      <p class="project-subtitle">Component-Based Single-Page Application</p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag blue">React Router</span>
+        <span class="tag">CSS Grid</span>
+      </div>
+      <ul class="project-highlights">
+        <li>Architected React SPA using component-based design with React Router for client-side navigation and dynamic content rendering</li>
+        <li>Built real-time search and multi-criteria filtering using React hooks (useState, useEffect) with responsive UI updates without page reloads</li>
+        <li>Applied best practices: reusable composition, prop drilling management, separation of concerns for a scalable, maintainable codebase</li>
+        <li>Implemented responsive layouts using CSS Flexbox and Grid ensuring cross-device and cross-browser compatibility</li>
+      </ul>
+      <a href="https://github.com/tshidzi02/React-Task-Manager.git" class="project-link" target="_blank">
+        View on GitHub →
+      </a>
+    </div>
+
+    <!-- PROJECT 4 -->
+    <div class="project-card span-7 fade-up">
+      <div class="project-index">04 / 06</div>
+      <h3 class="project-title">Algorithm & Data Structures Library</h3>
+      <p class="project-subtitle">Computer Science Fundamentals — Python & Java</p>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag blue">Java</span>
+        <span class="tag purple">Big-O Analysis</span>
+        <span class="tag yellow">DSA</span>
+      </div>
+      <ul class="project-highlights">
+        <li>Implemented core CS algorithms in Python and Java: binary search, quicksort, merge sort, DFS, and BFS for practical problem-solving</li>
+        <li>Performed rigorous time and space complexity analysis using Big-O notation, benchmarking performance across varying input sizes</li>
+        <li>Solved 30+ logic-based programming challenges applying dynamic programming, recursion, and greedy strategies to derive optimal solutions</li>
+        <li>Built systematic test validation workflows with edge-case test suites in Python to verify correctness of all implementations</li>
+      </ul>
+      <a href="https://github.com/tshidzi02/algo-ds-library.git" class="project-link" target="_blank">
+        View on GitHub →
+      </a>
+    </div>
+
+    <!-- PROJECT 5 -->
+    <div class="project-card span-6 fade-up">
+      <div class="project-index">05 / 06</div>
+      <h3 class="project-title">Automated Budget Management System</h3>
+      <p class="project-subtitle">Google Sheets + Apps Script Automation</p>
+      <div class="project-tags">
+        <span class="tag yellow">Google Apps Script</span>
+        <span class="tag">Google Sheets</span>
+        <span class="tag blue">JavaScript</span>
+      </div>
+      <ul class="project-highlights">
+        <li>Developed automated budget management system in Google Sheets to track daily expenses, income, and category-based spending trends</li>
+        <li>Built custom Google Apps Script functions to automate calculations, expense categorisation, and dynamic financial summaries</li>
+        <li>Designed structured calendar-style layout to visualise daily spending and improve financial planning workflows</li>
+        <li>Implemented automated logic to generate monthly summaries and financial insights with minimal manual input</li>
+      </ul>
+      <a href="https://docs.google.com/spreadsheets/d/1FBFnQ15zXigUEketGBJjX2EtTm_3x0Mpv2ssYiINVJM/edit?usp=sharing" class="project-link" target="_blank">
+        View Project →
+      </a>
+    </div>
+
+    <!-- PROJECT 6 -->
+    <div class="project-card span-6 fade-up">
+      <div class="project-index">06 / 06</div>
+      <h3 class="project-title">Automated Payslip Generator</h3>
+      <p class="project-subtitle">Payroll Document Automation Pipeline</p>
+      <div class="project-tags">
+        <span class="tag yellow">Google Apps Script</span>
+        <span class="tag">Google Docs</span>
+        <span class="tag">Google Sheets</span>
+        <span class="tag blue">JavaScript</span>
+      </div>
+      <ul class="project-highlights">
+        <li>Built automated payslip generation system converting payroll data from Google Sheets into structured, professional payslip documents</li>
+        <li>Developed Apps Script workflows to dynamically populate employee details, salary calculations, and deductions at scale</li>
+        <li>Automated document generation and formatting to produce consistent payslips directly from spreadsheet data</li>
+        <li>Reduced manual payroll processing time by creating a repeatable and scalable document automation pipeline</li>
+      </ul>
+      <a href="https://docs.google.com/spreadsheets/d/1iCLU8PQljdzD5Qsh7Npvf0n8etp6_djucTL3imP48MI/edit?usp=sharing" class="project-link" target="_blank">
+        View Project →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header fade-up">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="skills-grid">
+    <div class="skill-category fade-up">
+      <div class="skill-cat-title">Frontend</div>
+      <div class="skill-list">
+        <span class="skill-pill">React</span>
+        <span class="skill-pill">Vite</span>
+        <span class="skill-pill">JavaScript</span>
+        <span class="skill-pill">HTML5</span>
+        <span class="skill-pill">CSS3</span>
+        <span class="skill-pill">React Router</span>
+        <span class="skill-pill">Flexbox</span>
+        <span class="skill-pill">CSS Grid</span>
+      </div>
+    </div>
+    <div class="skill-category fade-up">
+      <div class="skill-cat-title">Backend & APIs</div>
+      <div class="skill-list">
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">Flask</span>
+        <span class="skill-pill">RESTful APIs</span>
+        <span class="skill-pill">JWT Auth</span>
+        <span class="skill-pill">Google OAuth 2.0</span>
+        <span class="skill-pill">Nginx</span>
+        <span class="skill-pill">SSL / Certbot</span>
+      </div>
+    </div>
+    <div class="skill-category fade-up">
+      <div class="skill-cat-title">AI & Data Science</div>
+      <div class="skill-list">
+        <span class="skill-pill">OpenAI GPT-4o</span>
+        <span class="skill-pill">Text Embeddings</span>
+        <span class="skill-pill">Cosine Similarity</span>
+        <span class="skill-pill">SciPy</span>
+        <span class="skill-pill">Matplotlib</span>
+        <span class="skill-pill">ODE Solvers</span>
+        <span class="skill-pill">NLP</span>
+      </div>
+    </div>
+    <div class="skill-category fade-up">
+      <div class="skill-cat-title">Infrastructure & Tools</div>
+      <div class="skill-list">
+        <span class="skill-pill">PostgreSQL</span>
+        <span class="skill-pill">DigitalOcean</span>
+        <span class="skill-pill">Google Apps Script</span>
+        <span class="skill-pill">Git / GitHub</span>
+        <span class="skill-pill">Java</span>
+        <span class="skill-pill">Big-O Analysis</span>
+        <span class="skill-pill">Linux / CLI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="padding-bottom: 0;">
+  <div class="section-header fade-up">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Get In Touch</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="contact-grid fade-up">
+    <div class="contact-main">
+      <h3 class="contact-title">
+        Let's Build<br><em>Something</em><br>Real.
+      </h3>
+      <p style="color: var(--text-mid); font-size: 13px; line-height: 1.9; max-width: 380px;">
+        I'm actively looking for software development roles where I can contribute to meaningful, well-engineered products. If that sounds like your team, let's talk.
+      </p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <span class="contact-item-label">Live Platform</span>
+          <a href="https://frontendjobs.online" class="contact-item-value" target="_blank">frontendjobs.online</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">GitHub</span>
+          <a href="https://github.com/tshidzi02" class="contact-item-value" target="_blank">github.com/tshidzi02</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-item-label">Location</span>
+          <span class="contact-item-value" style="color: var(--text-mid);">Cape Town, South Africa</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-side">
+      <div>
+        <h4 class="contact-side-title">Available for Hire</h4>
+        <p class="contact-side-text">
+          Open to full-time, contract, and remote opportunities. I thrive in environments that value curiosity, ownership, and building things that matter.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="background: rgba(8,12,16,0.12); padding: 16px 20px; font-size: 12px; color: rgba(8,12,16,0.7);">
+            ✓ &nbsp; Full-Stack Development
+          </div>
+          <div style="background: rgba(8,12,16,0.12); padding: 16px 20px; font-size: 12px; color: rgba(8,12,16,0.7);">
+            ✓ &nbsp; AI / ML Integration
+          </div>
+          <div style="background: rgba(8,12,16,0.12); padding: 16px 20px; font-size: 12px; color: rgba(8,12,16,0.7);">
+            ✓ &nbsp; Automation & Scripting
+          </div>
+        </div>
+      </div>
+      <div class="contact-avail">
+        <div class="avail-dot"></div>
+        Currently Open to Work · 2025
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Mutshidzi Madzivhandila — Software Developer Portfolio · 2025</span>
+  <span>Built with intention. Deployed with care.</span>
+</footer>
+
+<script>
+  // Scroll-triggered fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
